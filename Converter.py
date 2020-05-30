@@ -50,21 +50,16 @@ def IEEE(signe, nbits, mbits, exponent, normalitzat):
     print("------------------------ IEEE ----------------------------------")
 
     RE = pow(2, (nbits - 1)) + exponent         # R(E) = 2^(n-1)+E
-    REB = str(bin(int(RE))).replace("0b", "")   # R(E) en binari
-
+    REB=bin(int(RE))[2:]
     print("signe",  str(signe))                 # signe: 0(+) 1(-)
-
-    it = 0
-    maxim = nbits - len(REB)                    # python per no posa bits adicionals  2 en binari es 10,
-    while (it < maxim):                         # pero si fem servir 4 xifres haurem de posar 0 adicionals
-        REB = "0" + REB                         # aixi pasa de 10 a 0010, per aquesta part passa sempre que es necessari
-        it = it + 1
+    REB=REB.zfill(nbits)
+    REB=str(REB)
     print("exponent binari", REB)
 
     N = list(normalitzat)                       # quan s'entra la mantissa normalitzada, es don per suposat que s'entra amb el bit ocult
     s = "".join(N[0:mbits])                     # llavors es selecciona el nombre de bits necessaris de la mantissa
                                                 # mantissa 0101000011 (pero volem 6 xifres) 010100xxxx
-
+    print("mantissa", s)
     print("[" + str(signe) + "]" + "[" + REB + "]" + "[" + s + "]")
     return str(signe)+str(REB)+str(s)
 
@@ -82,7 +77,10 @@ def number(num, precision, signe, nbits, mbits):
 
     integer_part, decimal_part = str(num).split(".")
 
-    integer_bin_part = str(bin(int(integer_part))).replace("0b", "")    # passa a decimal la part entera
+    integer_bin_part = bin(int(integer_part))[2:]
+    integer_bin_part = str(integer_bin_part)
+
+    #integer_bin_part = str(bin(int(integer_part))).replace("0b", "")    # passa a decimal la part entera
 
     decimal_bin_part = decimal(float("0." + decimal_part), precision)    # passa a decimal la part decimal
 
