@@ -253,7 +253,6 @@ def IEEEtoNum():
         print("Nomero en decimal:", "+" if signe[0] == "0" else "-", toDecimal("".join(norm)))
 
     elif decimal_exp > 0:  # positive exponent
-        print("DEBUG positivo")
 
         norm = list("0.1" + "".join(mantissa))
         norm.pop(norm.index("."))
