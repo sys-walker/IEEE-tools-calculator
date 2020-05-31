@@ -208,7 +208,6 @@ def toDecimalBase(array, initial, increment):
 
 
 def toDecimal(num_binari_punt_flotante):
-    print("DEBUG toDecimal", num_binari_punt_flotante)
     integer_part, decimal_part = num_binari_punt_flotante.split(".")
 
     integer_part = list(integer_part)
