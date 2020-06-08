@@ -282,6 +282,117 @@ def IEEEtoNum():
     else:
         pass
 
+#############################################################################
+def toIntArray(param):
+    Array = list(param)
+    A=[]
+    for item in Array:
+        if item == "1":
+            A.append(1)
+        else:
+            A.append(0)
+    return A
+
+
+def sumarBinariMantisses(Astr, Bstr):
+    A = toIntArray(Astr)
+    B = toIntArray(Bstr)
+
+
+
+    A.reverse()
+    B.reverse()
+    lenMax = max(len(A), len(B)) * 2
+    tmp = [0 for _ in range(lenMax)]
+    it_tmp = lenMax - 1
+    for i in range(len(A)):
+        tmp[it_tmp] = A[i] + B[i]
+        it_tmp -= 1
+    tmp.reverse()
+    carry = 0
+    Total = []
+    for x in range(lenMax):
+        T = tmp[x] + carry
+        if T == 2:
+            carry = 1
+            Total.append(0)
+        elif T == 3:
+            carry = 1
+            Total.append(1)
+        else:
+            carry = 0
+            Total.append(T)
+
+    Total.reverse()
+    return Total
+
+
+def toString(Array):
+    A = ""
+    for item in Array:
+        if item == 1:
+            A +="1"
+        else:
+            A += "0"
+    return A
+
+
+def trimExtras(Total, Bstr):
+    i = len(Total) - len(Bstr)
+    Total = toString(Total)  # convierte en un string
+    Total = list(Total)  # convierte en chars array
+    Total.insert(i, ".")
+    Total = "".join(Total)  # convierte en un string
+    if "1." in Total:
+        Total = list(Total)  # convierte en chars array
+        rag = Total.index("1")
+        Total = Total[rag:]
+        Total = "".join(Total)  # convierte en un string
+
+    else:
+        Total = list(Total)  # convierte en chars array
+        rag = Total.index(".")
+        Total = Total[rag:]
+        Total = "".join(Total)  # convierte en un string    ".bbbbbbb"
+        Total = "0" + Total
+
+    return Total
+
+
+def sumadorMantisses(Astr, Bstr):
+    Astr = Astr.replace("0.", "")
+    Bstr = Bstr.replace("0.", "")
+    if len(Astr) < len(Bstr):
+        Astr = Astr.zfill(len(Bstr))
+        Astr = list(Astr)
+        Astr.reverse()
+        Astr = "".join(Astr)
+
+    else:
+        Bstr = Bstr.zfill(len(Astr))
+        Bstr = list(Bstr)
+        Bstr.reverse()
+        Bstr = "".join(Bstr)
+
+    Total = sumarBinariMantisses(Astr, Bstr)
+
+    # Formato IEE sin extras
+    Total = trimExtras(Total, Bstr)
+
+    return Total
+
+
+def sumaIEE():
+    mantissa_A="0.11"
+    mantissa_B = "0.11"
+    Total = sumadorMantisses(mantissa_A, mantissa_B)
+    if "1." in Total:
+        print("normalitzar")
+    else:
+        print("JA esta normalitzat")
+    print(mantissa_A, "+", mantissa_B, "=", Total)
+    return
+
 
 def calculadoraIEE():
     while True:
@@ -295,6 +406,7 @@ def calculadoraIEE():
         opt = input(">")
         if opt == "+":
             os.system("clear")
+            sumaIEE()
             print("Aviat!!!")
             input("\ncontinuar ...")
             os.system("clear")
