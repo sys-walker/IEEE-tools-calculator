@@ -406,7 +406,7 @@ def calculadoraIEE():
         opt = input(">")
         if opt == "+":
             os.system("clear")
-            sumaIEE()
+            #sumaIEE()
             print("Aviat!!!")
             input("\ncontinuar ...")
             os.system("clear")
