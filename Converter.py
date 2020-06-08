@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ARREGLAR AQUESTA GUARRADA XDDD
-import os
+import os,sys
 
 
 def decimal(NUM, n):
@@ -128,8 +128,16 @@ def numToIEEE():
     return
 
 
-def banner():
-    print("IEEE tools.")
+def switch_banner(num):
+    switcher = {
+        0: "IEEE tools.",
+        1: "Calculadora IEEE"
+    }
+    return switcher.get(num)
+
+
+def banner(num):
+    print(switch_banner(num))
 
 
 def calculateExponentDecimalRepresentation(REB, nbits):
@@ -275,13 +283,67 @@ def IEEEtoNum():
         pass
 
 
+def calculadoraIEE():
+    while True:
+        banner(1)
+        print("Suma de números IEEE            [+]")
+        print("Resta de números IEEE           [-]")
+        print("Divisió de números IEEE         [*]")
+        print("Multiplicació de números        [/]")
+        print("Sortir de IEEE tools            [f]")
+        print("<= Tornar enrere                [t]")
+        opt = input(">")
+        if opt == "+":
+            os.system("clear")
+            print("Aviat!!!")
+            input("\ncontinuar ...")
+            os.system("clear")
+        elif opt == "-":
+            os.system("clear")
+            print("Aviat!!!")
+            input("\ncontinuar ...")
+            os.system("clear")
+        elif opt == "*":
+            os.system("clear")
+            print("Aviat!!!")
+            input("\ncontinuar ...")
+            os.system("clear")
+        elif opt == "/":
+            os.system("clear")
+            print("Aviat!!!")
+            input("\ncontinuar ...")
+            os.system("clear")
+        elif opt == "f":
+            sys.exit(0)
+        elif opt == "t":
+            return
+        else:
+            print("Unknown")
+            input("\ncontinuar ...")
+            os.system("clear")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     os.system("clear")
     while True:
-        banner()
+        banner(0)
         print("Convertir Numero -->IEEE            [0]")
         print("Convertir IEEE -->Numero            [1]")
         print("Rang IEEE [Signe|Exponent|Mantissa] [2]")
+        print("Calculadora IEE                     [3]")
         print("Sortir                              [x]")
         opt = input(">")
         if opt == "0":
@@ -295,9 +357,13 @@ if __name__ == '__main__':
             input("\ncontinuar ...")
             os.system("clear")
         elif opt == "2":
-
             rangeIEE()
             input("\ncontinuar ...")
+            os.system("clear")
+        elif opt == "3":
+            os.system("clear")
+            calculadoraIEE()
+
             os.system("clear")
         elif opt == "x":
             break
