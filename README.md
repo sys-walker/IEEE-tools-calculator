@@ -70,7 +70,7 @@ exponent binari 1101
 
 ## Llicència 📄
 
-Aquest projecte està sota la Llicència GNU GPLv3 -  [LICENSE.md](LICENSE.md) per a mes detalls
+Aquest projecte està sota la Llicència GNU GPLv3 -  [LICENSE.md](LICENSE) per a mes detalls
 
 
 
