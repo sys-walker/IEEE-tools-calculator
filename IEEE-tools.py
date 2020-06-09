@@ -344,6 +344,7 @@ def num_to_IEEE():
     lst = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
     size = int(lst[0]) + int(lst[1]) + ((int(lst[1]) + int(lst[2])) * 2)
     number(num, size, int(lst[0]), int(lst[1]), int(lst[2]))
+    return
 
 
 def IEEE_to_num():
@@ -413,30 +414,32 @@ def range_IEEE():
     print("Exponent Major", min_exp, ",que correspon a l'exponent " + str(dec_min_exp))
     print("\n")
 
-    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
-                     mantissa_menor_no_bit_ocult)
+    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
     print("\n\n")
-    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
-                     mantissa_menor_no_bit_ocult)
+    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
     return
 
 
 def select_menu_option(option):
     clear()
-    option()
+
+    if option():
+        return
+
     input("\nContinuar ...")
     clear()
 
 
 def IEE_calculator():
     while True:
+        clear()
         print_banner(1)
         print("Suma de números IEEE            [+]")
         print("Resta de números IEEE           [-]")
         print("Divisió de números IEEE         [*]")
         print("Multiplicació de números        [/]")
-        print("Sortir de IEEE tools            [f]")
-        print("<= Tornar enrere                [t]")
+        print("Tornar enrere                   [t]")
+        print("Sortir                          [x]")
         opt = input(">")
         if opt == "+":
             select_menu_option(addition_IEEE)
@@ -446,18 +449,15 @@ def IEE_calculator():
             select_menu_option(input("Not Implemented Yet"))
         elif opt == "/":
             select_menu_option(input("Not Implemented Yet"))
-        elif opt == "f":
-            sys.exit(0)
         elif opt == "t":
-            return
-        else:
-            print("Unknown")
-            input("\ncontinuar ...")
-            clear()
+            return True
+        elif opt == "x":
+            sys.exit(0)
 
 
 def main():
     while True:
+        clear()
         print_banner(0)
         print("Convertir Numero -->IEEE            [0]")
         print("Convertir IEEE -->Numero            [1]")
@@ -474,21 +474,19 @@ def main():
         elif opt == "3":
             select_menu_option(IEE_calculator)
         elif opt == "x":
-            break
-        else:
-            print("Unknown")
-            input("\ncontinuar ...")
-            clear()
+            sys.exit(0)
 
 
 if __name__ == '__main__':
     try:
-        clear()
         main()
 
     # Exception handling
     except KeyboardInterrupt:  # Ctrl-C
         print("Keyboard Interruption")
     except SystemExit:  # sys.exit()
-        print("System Exit")
-        raise
+        if str(sys.exc_info()[1]) != "0":
+            print("System Exit")
+            raise
+        else:
+            clear()
