@@ -10,11 +10,11 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def print_banner(num):
+def print_banner(banner_option):
     banner = ""
-    if num == 0:
-        banner = "IEEE tools."
-    elif num == 1:
+    if banner_option == 0:
+        banner = "IEEE tools"
+    elif banner_option == 1:
         banner = "Calculadora IEEE"
 
     print(banner)
@@ -344,7 +344,6 @@ def num_to_IEEE():
     lst = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
     size = int(lst[0]) + int(lst[1]) + ((int(lst[1]) + int(lst[2])) * 2)
     number(num, size, int(lst[0]), int(lst[1]), int(lst[2]))
-    return
 
 
 def IEEE_to_num():
@@ -422,6 +421,13 @@ def range_IEEE():
     return
 
 
+def select_menu_option(option):
+    clear()
+    option()
+    input("\nContinuar ...")
+    clear()
+
+
 def IEE_calculator():
     while True:
         print_banner(1)
@@ -433,26 +439,13 @@ def IEE_calculator():
         print("<= Tornar enrere                [t]")
         opt = input(">")
         if opt == "+":
-            clear()
-            addition_IEEE()
-            print("Aviat!!!")
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(addition_IEEE)
         elif opt == "-":
-            clear()
-            print("Aviat!!!")
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(input("Not Implemented Yet"))
         elif opt == "*":
-            clear()
-            print("Aviat!!!")
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(input("Not Implemented Yet"))
         elif opt == "/":
-            clear()
-            print("Aviat!!!")
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(input("Not Implemented Yet"))
         elif opt == "f":
             sys.exit(0)
         elif opt == "t":
@@ -463,7 +456,6 @@ def IEE_calculator():
             clear()
 
 
-# Menus
 def main():
     while True:
         print_banner(0)
@@ -474,24 +466,13 @@ def main():
         print("Sortir                              [x]")
         opt = input(">")
         if opt == "0":
-            clear()
-            num_to_IEEE()
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(num_to_IEEE)
         elif opt == "1":
-            clear()
-            IEEE_to_num()
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(IEEE_to_num)
         elif opt == "2":
-            range_IEEE()
-            input("\ncontinuar ...")
-            clear()
+            select_menu_option(range_IEEE)
         elif opt == "3":
-            clear()
-            input("Aviat!!")
-            # IEE_calculator()
-            clear()
+            select_menu_option(IEE_calculator)
         elif opt == "x":
             break
         else:
