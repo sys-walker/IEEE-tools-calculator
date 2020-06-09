@@ -3,24 +3,21 @@
 
 
 import os
-import signal
 import sys
 
 
-# Banner
-import traceback
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def switch_banner(num):
-    switcher = {
-        0: "IEEE tools.",
-        1: "Calculadora IEEE"
-    }
-    return switcher.get(num)
+def print_banner(num):
+    banner = ""
+    if num == 0:
+        banner = "IEEE tools."
+    elif num == 1:
+        banner = "Calculadora IEEE"
 
-
-def banner(num):
-    print(switch_banner(num))
+    print(banner)
 
 
 # Utils subfunctions
@@ -417,54 +414,17 @@ def range_IEEE():
     print("Exponent Major", min_exp, ",que correspon a l'exponent " + str(dec_min_exp))
     print("\n")
 
-    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
+    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
+                     mantissa_menor_no_bit_ocult)
     print("\n\n")
-    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
+    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
+                     mantissa_menor_no_bit_ocult)
     return
-
-
-# Menus
-def main():
-    while True:
-        banner(0)
-        print("Convertir Numero -->IEEE            [0]")
-        print("Convertir IEEE -->Numero            [1]")
-        print("Rang IEEE [Signe|Exponent|Mantissa] [2]")
-        print("Calculadora IEE                     [3]")
-        print("Sortir                              [x]")
-        opt = input(">")
-        if opt == "0":
-            clear()
-            num_to_IEEE()
-            input("\ncontinuar ...")
-            clear()
-        elif opt == "1":
-            clear()
-            IEEE_to_num()
-            input("\ncontinuar ...")
-            clear()
-        elif opt == "2":
-            range_IEEE()
-            input("\ncontinuar ...")
-            clear()
-        elif opt == "3":
-            clear()
-            input("Aviat!!")
-
-            # IEE_calculator()
-
-            clear()
-        elif opt == "x":
-            break
-        else:
-            print("Unknown")
-            input("\ncontinuar ...")
-            clear()
 
 
 def IEE_calculator():
     while True:
-        banner(1)
+        print_banner(1)
         print("Suma de números IEEE            [+]")
         print("Resta de números IEEE           [-]")
         print("Divisió de números IEEE         [*]")
@@ -503,13 +463,41 @@ def IEE_calculator():
             clear()
 
 
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-
-# signal signint Ctrl+c handler
-def sigint_handler(signal, frame):
-    sys.exit(0)
+# Menus
+def main():
+    while True:
+        print_banner(0)
+        print("Convertir Numero -->IEEE            [0]")
+        print("Convertir IEEE -->Numero            [1]")
+        print("Rang IEEE [Signe|Exponent|Mantissa] [2]")
+        print("Calculadora IEE                     [3]")
+        print("Sortir                              [x]")
+        opt = input(">")
+        if opt == "0":
+            clear()
+            num_to_IEEE()
+            input("\ncontinuar ...")
+            clear()
+        elif opt == "1":
+            clear()
+            IEEE_to_num()
+            input("\ncontinuar ...")
+            clear()
+        elif opt == "2":
+            range_IEEE()
+            input("\ncontinuar ...")
+            clear()
+        elif opt == "3":
+            clear()
+            input("Aviat!!")
+            # IEE_calculator()
+            clear()
+        elif opt == "x":
+            break
+        else:
+            print("Unknown")
+            input("\ncontinuar ...")
+            clear()
 
 
 if __name__ == '__main__':
