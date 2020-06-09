@@ -13,9 +13,9 @@ def clear():
 def print_banner(banner_option):
     banner = ""
     if banner_option == 0:
-        banner = "IEEE tools"
+        banner = '\033[1m' + '| IEEE 754 tools |' + '\033[0m'
     elif banner_option == 1:
-        banner = "Calculadora IEEE"
+        banner = '\033[1m' + '| Calculadora IEEE 754 |' + '\033[0m'
 
     print(banner)
 
@@ -293,9 +293,9 @@ def mostrar_negatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajo
 
 
 # numToIEEE subfunctions
-def number(num, precision, signe, nbits, mbits):
+def number(num, precision, exp_bits, mant_bits):
     print("\n")
-    SIGNE, num, symbol = get_sign_math(num)
+    signe, num, symbol = get_sign_math(num)
     integer_part, decimal_part = str(num).split(".")
     integer_bin_part = str(integer_to_binary(int(integer_part)))
     decimal_bin_part = decimal_to_binary_str(float("0." + decimal_part), precision)
@@ -303,8 +303,7 @@ def number(num, precision, signe, nbits, mbits):
     normalitzat, exp = normalize_IEEE(integer_bin_part + "." + decimal_bin_part)
     mantissa_bitOcult = normalitzat.replace("0.1", "")
     print("Normalitzat: ", symbol + normalitzat, " x2^", exp)
-    IEEE_str = represent_to_IEE(SIGNE, nbits, mbits, exp, mantissa_bitOcult)
-    return IEEE_str
+    represent_to_IEE(signe, exp_bits, mant_bits, exp, mantissa_bitOcult)
 
 
 def can_normalize(N):
@@ -339,12 +338,11 @@ def get_sign_math(num):
 
 # Main menu options
 def num_to_IEEE():
-    num = float(input("Numero >").replace(",", "."))
-    # size = int(input("precision >"))
-    lst = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
-    size = int(lst[0]) + int(lst[1]) + ((int(lst[1]) + int(lst[2])) * 2)
-    number(num, size, int(lst[0]), int(lst[1]), int(lst[2]))
-    return
+    num = float(input("Numero: ").replace(",", "."))
+    exp = int(input("Bits exponent: "))
+    mant = int(input("Bits mantissa: "))
+    precision = 1 + exp + ((exp + mant) * 2)
+    number(num, precision, exp, mant)
 
 
 def IEEE_to_num():
@@ -422,10 +420,8 @@ def range_IEEE():
 
 def select_menu_option(option):
     clear()
-
     if option():
         return
-
     input("\nContinuar ...")
     clear()
 
@@ -437,10 +433,10 @@ def IEE_calculator():
         print("Suma de números IEEE            [+]")
         print("Resta de números IEEE           [-]")
         print("Divisió de números IEEE         [*]")
-        print("Multiplicació de números        [/]")
+        print("Multiplicació de números IEEE   [/]")
         print("Tornar enrere                   [t]")
         print("Sortir                          [x]")
-        opt = input(">")
+        opt = input("> ")
         if opt == "+":
             select_menu_option(addition_IEEE)
         elif opt == "-":
@@ -459,12 +455,12 @@ def main():
     while True:
         clear()
         print_banner(0)
-        print("Convertir Numero -->IEEE            [0]")
-        print("Convertir IEEE -->Numero            [1]")
-        print("Rang IEEE [Signe|Exponent|Mantissa] [2]")
-        print("Calculadora IEE                     [3]")
-        print("Sortir                              [x]")
-        opt = input(">")
+        print("Convertir: Numero --> IEEE           [0]")
+        print("Convertir: IEEE   --> Numero         [1]")
+        print("Rang IEEE                            [2]")
+        print("Calculadora IEEE                     [3]")
+        print("Sortir                               [x]")
+        opt = input("> ")
         if opt == "0":
             select_menu_option(num_to_IEEE)
         elif opt == "1":
