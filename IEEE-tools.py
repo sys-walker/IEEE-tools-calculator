@@ -398,7 +398,7 @@ def IEEE_to_num():
 
 def range_IEEE():
     signe, nbits, mbits = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
-    os.system("clear")
+    clear()
     max_exp = "1" * int(nbits)
     min_exp = "".zfill(int(nbits))
     dec_max_exp = calculate_exponent_decimal_representation(max_exp, int(nbits))
@@ -431,32 +431,32 @@ def main():
         print("Sortir                              [x]")
         opt = input(">")
         if opt == "0":
-            os.system("clear")
+            clear()
             num_to_IEEE()
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "1":
-            os.system("clear")
+            clear()
             IEEE_to_num()
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "2":
             range_IEEE()
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "3":
-            os.system("clear")
+            clear()
             input("Aviat!!")
 
             # IEE_calculator()
 
-            os.system("clear")
+            clear()
         elif opt == "x":
             break
         else:
             print("Unknown")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
 
 
 def IEE_calculator():
@@ -470,26 +470,26 @@ def IEE_calculator():
         print("<= Tornar enrere                [t]")
         opt = input(">")
         if opt == "+":
-            os.system("clear")
+            clear()
             addition_IEEE()
             print("Aviat!!!")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "-":
-            os.system("clear")
+            clear()
             print("Aviat!!!")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "*":
-            os.system("clear")
+            clear()
             print("Aviat!!!")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "/":
-            os.system("clear")
+            clear()
             print("Aviat!!!")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
         elif opt == "f":
             sys.exit(0)
         elif opt == "t":
@@ -497,7 +497,11 @@ def IEE_calculator():
         else:
             print("Unknown")
             input("\ncontinuar ...")
-            os.system("clear")
+            clear()
+
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 # signal signint Ctrl+c handler
@@ -507,6 +511,6 @@ def sigint_handler(signal, frame):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
-    os.system("clear")
+    clear()
 
     main()
