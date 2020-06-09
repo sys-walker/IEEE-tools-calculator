@@ -8,6 +8,9 @@ import sys
 
 
 # Banner
+import traceback
+
+
 def switch_banner(num):
     switcher = {
         0: "IEEE tools.",
@@ -510,7 +513,13 @@ def sigint_handler(signal, frame):
 
 
 if __name__ == '__main__':
-    signal.signal(signal.SIGINT, sigint_handler)
-    clear()
+    try:
+        clear()
+        main()
 
-    main()
+    # Exception handling
+    except KeyboardInterrupt:  # Ctrl-C
+        print("Keyboard Interruption")
+    except SystemExit:  # sys.exit()
+        print("System Exit")
+        raise
