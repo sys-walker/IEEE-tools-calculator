@@ -2,20 +2,26 @@
 # -*- coding: utf-8 -*-
 
 
-import os,sys,signal
+import os
+import signal
+import sys
 
-#Banner
+
+# Banner
 def switch_banner(num):
     switcher = {
         0: "IEEE tools.",
         1: "Calculadora IEEE"
     }
     return switcher.get(num)
+
+
 def banner(num):
     print(switch_banner(num))
 
-#Utils subfunctions
-def toDecimalBase(array, initial, increment):
+
+# Utils subfunctions
+def to_decimal_base(array, initial, increment):
     s = 0.0
     for i in range(len(array)):
         tmp = int(array[i]) * pow(2, initial)
@@ -24,60 +30,72 @@ def toDecimalBase(array, initial, increment):
         initial = initial + increment
     print("Total =", s)
     return s
-#Utils
-def stringBinary_to_binaryArray(binary_num_str):
-    Array = list(binary_num_str)
-    A=[]
-    for item in Array:
-        if item == "1":
-            A.append(1)
-        else:
-            A.append(0)
-    return A
-def binary_toString(Array_binary_string_digits):
-    A = ""
-    for item in Array_binary_string_digits:
-        if item == 1:
-            A +="1"
-        else:
-            A += "0"
-    return A
-def integer_to_Binary(integer_str):
-    return bin(int(integer_str))[2:]
-def sumarBinari(binary_num_str_1, binary_num_str_2):
-    A = stringBinary_to_binaryArray(binary_num_str_1)
-    B = stringBinary_to_binaryArray(binary_num_str_2)
 
-    A.reverse()
-    B.reverse()
-    lenMax = max(len(A), len(B)) * 2
-    tmp = [0 for _ in range(lenMax)]
-    it_tmp = lenMax - 1
-    for i in range(len(A)):
-        tmp[it_tmp] = A[i] + B[i]
+
+# Utils
+def string_binary_to_binary_array(binary_num_str):
+    array = list(binary_num_str)
+    a = []
+    for item in array:
+        if item == "1":
+            a.append(1)
+        else:
+            a.append(0)
+    return a
+
+
+def binary_to_string(array_binary_string_digits):
+    a = ""
+    for item in array_binary_string_digits:
+        if item == 1:
+            a += "1"
+        else:
+            a += "0"
+    return a
+
+
+def integer_to_binary(integer_str):
+    return bin(int(integer_str))[2:]
+
+
+def add_binary(binary_num_str_1, binary_num_str_2):
+    a = string_binary_to_binary_array(binary_num_str_1)
+    b = string_binary_to_binary_array(binary_num_str_2)
+
+    a.reverse()
+    b.reverse()
+    len_max = max(len(a), len(b)) * 2
+    tmp = [0 for _ in range(len_max)]
+    it_tmp = len_max - 1
+    for i in range(len(a)):
+        tmp[it_tmp] = a[i] + b[i]
         it_tmp -= 1
     tmp.reverse()
     carry = 0
-    Total = []
-    for x in range(lenMax):
+    total = []
+    for x in range(len_max):
         T = tmp[x] + carry
         if T == 2:
             carry = 1
-            Total.append(0)
+            total.append(0)
         elif T == 3:
             carry = 1
-            Total.append(1)
+            total.append(1)
         else:
             carry = 0
-            Total.append(T)
+            total.append(T)
 
-    Total.reverse()
-    return Total
+    total.reverse()
+    return total
+
+
 def binary_decimal_to_num(binary_floating_point_str):
     integer_part, decimal_part = binary_floating_point_str.split(".")
     integer_part = list(integer_part)
     decimal_part = list(decimal_part)
-    return str(toDecimalBase(integer_part, len(integer_part) - 1, -1) + toDecimalBase(decimal_part, -1, -1))
+    return str(to_decimal_base(integer_part, len(integer_part) - 1, -1) + to_decimal_base(decimal_part, -1, -1))
+
+
 def decimal_to_binary_str(integer_decimal_num, n):
     """
               NUM= 0'65
@@ -103,27 +121,32 @@ def decimal_to_binary_str(integer_decimal_num, n):
 
     return s
 
-#IEE utils
-def normalize_IEE(Num):
-    NumArray = list(Num)
 
-    if NumArray[0] == "1":
-        exp = Num.index(".")
-        lst = Num.split(".")
-        Norm = "0." + lst[0] + lst[1]
-        return Norm,exp
+# IEE utils
+def normalize_IEEE(num):
+    num_array = list(num)
+
+    if num_array[0] == "1":
+        exp = num.index(".")
+        lst = num.split(".")
+        norm = "0." + lst[0] + lst[1]
+        return norm, exp
     else:
-        normalize, exponent, elim = can_normalize(NumArray)
+        normalize, exponent, elim = can_normalize(num_array)
         if normalize == False:
             print("Normalitzat : can't normalize")
-            return "No Normalization",-1,False
+            return "No Normalization", -1, False
         else:
-            Norm = "0."+"".join(NumArray[elim:])
-            return Norm, -exponent
-def calculateExponentDecimalRepresentation(REB, nbits):
+            norm = "0." + "".join(num_array[elim:])
+            return norm, -exponent
+
+
+def calculate_exponent_decimal_representation(REB, nbits):
     RE = int(REB, 2)
     E = int(RE - pow(2, int(nbits) - 1))
     return E
+
+
 def represent_to_IEE(signe, nbits, mbits, exponent, normalitzat):
     # nbits son els bits de l'exponent
     # mbits son els bits de la mantissa
@@ -144,8 +167,9 @@ def represent_to_IEE(signe, nbits, mbits, exponent, normalitzat):
     print("[" + str(signe) + "]" + "[" + REB + "]" + "[" + s + "]")
     return str(signe) + str(REB) + str(s)
 
-#additionIEE subfunctions
-def sumadorMantisses(Astr, Bstr):
+
+# additionIEE subfunctions
+def sumador_mantisses(Astr, Bstr):
     point = -1
     if len(Astr) < len(Bstr):
         Astr = list(Astr)
@@ -174,62 +198,68 @@ def sumadorMantisses(Astr, Bstr):
         point = len(Bstr) - point - 1
         Bstr = "".join(Bstr)
 
-
-
-
-
     Astr = Astr.replace("0.", "")
     Bstr = Bstr.replace("0.", "")
 
-    Total = sumarBinariMantisses(Astr, Bstr)
+    total = sumar_binari_mantisses(Astr, Bstr)
 
     # Formato IEE sin extras
-    Total = trimExtras(Total, point)
+    total = trim_extras(total, point)
 
-    return Total
-def sumarBinariMantisses(Astr, Bstr):
+    return total
+
+
+def sumar_binari_mantisses(Astr, Bstr):
     if len(Astr) < len(Bstr):
         Astr = Astr.zfill(len(Bstr))
     else:
         Bstr = Bstr.zfill(len(Astr))
     print("A=", Astr, "   B=", Bstr)
 
-    Total = sumarBinari(Astr, Bstr)
+    total = add_binary(Astr, Bstr)
+
+    total = binary_to_string(total)
+    return total
 
 
-    Total = binary_toString(Total)
-    return Total
-def trimExtras(Total, point):
-    Total = list(Total)
-    Total.insert(len(Total) - point, ".")
-    rag_symb = "1" if "1." in "".join(Total) else "."
-    rag = Total.index(rag_symb)
-    Total = Total[rag:]
-    Total = "".join(Total) if rag_symb == "1" else "0" + "".join(Total)
-    return Total
+def trim_extras(total, point):
+    total = list(total)
+    total.insert(len(total) - point, ".")
+    rag_symbol = "1" if "1." in "".join(total) else "."
+    rag = total.index(rag_symbol)
+    total = total[rag:]
+    total = "".join(total) if rag_symbol == "1" else "0" + "".join(total)
+    return total
 
 
 # IEE_calculator menu options
-def additionIEEE():
-    mantissa_A="0.1"
-    mantissa_B="0.1"
-    Total = sumadorMantisses(mantissa_A, mantissa_B)
+def addition_IEEE():
+    mantissa_A = "0.1"
+    mantissa_B = "0.1"
+    Total = sumador_mantisses(mantissa_A, mantissa_B)
     if "1." in Total:
-        Total,_=normalize_IEE(Total)
+        Total, _ = normalize_IEEE(Total)
     elif ".0" in Total:
-        Total, _ = normalize_IEE(Total)
+        Total, _ = normalize_IEEE(Total)
     print(mantissa_A, "+", mantissa_B, "=", Total)
     return
-def susbstractionIEEE():
-    pass
-def productIEEE():
-    pass
-def divisionIEEE():
+
+
+def susbstraction_IEEE():
     pass
 
-#Range IEEE subfunctions
-def mostrarPositius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult,
-                    mantissaMenor_no_bitOcult):
+
+def product_IEEE():
+    pass
+
+
+def division_IEEE():
+    pass
+
+
+# Range IEEE subfunctions
+def mostrar_positius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult,
+                     mantissaMenor_no_bitOcult):
     print("Numero Positiu Major")
     print("Signe  = 0")
     print("Exponent:", maxExp, "que representa l'exponent +" + str(dec_M_Exp))
@@ -243,8 +273,10 @@ def mostrarPositius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor
                                                             "") + ", que correspon a la mantissa " + mantissaMenor_no_bitOcult)
     print("Num.Positiu menor=+" + mantissaMenor_no_bitOcult + "x2^" + str(dec_m_Exp))
     return
-def mostrarNegatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult,
-                    mantissaMenor_no_bitOcult):
+
+
+def mostrar_negatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult,
+                     mantissaMenor_no_bitOcult):
     print("Numero Negatiu Major")
     print("Signe  = 1")
     print("Exponent:", menorExp, "que representa l'exponent " + str(dec_m_Exp))
@@ -259,19 +291,22 @@ def mostrarNegatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor
     print("Num.Negatiu menor=-" + mantissaMajor_no_bitOcult + "x2^" + str(dec_M_Exp))
     return
 
+
 # numToIEEE subfunctions
 def number(num, precision, signe, nbits, mbits):
     print("\n")
-    SIGNE, num,symbol = getSignMath(num)
+    SIGNE, num, symbol = get_sign_math(num)
     integer_part, decimal_part = str(num).split(".")
-    integer_bin_part = str(integer_to_Binary(int(integer_part)))
+    integer_bin_part = str(integer_to_binary(int(integer_part)))
     decimal_bin_part = decimal_to_binary_str(float("0." + decimal_part), precision)
-    print("Num binari: "+symbol + integer_bin_part + "." + decimal_bin_part)
-    normalitzat, exp = normalize_IEE(integer_bin_part + "." + decimal_bin_part)
+    print("Num binari: " + symbol + integer_bin_part + "." + decimal_bin_part)
+    normalitzat, exp = normalize_IEEE(integer_bin_part + "." + decimal_bin_part)
     mantissa_bitOcult = normalitzat.replace("0.1", "")
     print("Normalitzat: ", symbol + normalitzat, " x2^", exp)
     IEEE_str = represent_to_IEE(SIGNE, nbits, mbits, exp, mantissa_bitOcult)
     return IEEE_str
+
+
 def can_normalize(N):
     count = 0  # conta quants llocs s'a desplac'at el decimal
     elim = 0  # elimina les posicions fins al primer 1 | 0.00001bbb ---> 1bbbbb
@@ -287,42 +322,47 @@ def can_normalize(N):
             break
         count = count + 1
     return can_be_normalized, count, elim
-def getSignMath(num):
+
+
+def get_sign_math(num):
     if "-" in str(num):
         tmp = list(str(num))  # comprova i elimina el signe negatiu
         num = float("".join(tmp[1:]))  # restaura el numero sense el signe negatiu
-        return 1, num,"-"
+        return 1, num, "-"
     elif "+" in str(num):
         tmp = list(str(num))  # comprova i elimina el signe negatiu
         num = float("".join(tmp[1:]))  # restaura el numero sense el signe negatiu
-        return 0, num,"+"
+        return 0, num, "+"
     else:
-        return 0, num,"+"
+        return 0, num, "+"
+
+
 # Main menu options
-def numToIEEE():
+def num_to_IEEE():
     num = float(input("Numero >").replace(",", "."))
-    #size = int(input("precision >"))
+    # size = int(input("precision >"))
     lst = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
-    size =  int(lst[0])+int(lst[1])+((int(lst[1])+int(lst[2]))*2)
+    size = int(lst[0]) + int(lst[1]) + ((int(lst[1]) + int(lst[2])) * 2)
     number(num, size, int(lst[0]), int(lst[1]), int(lst[2]))
     return
-def IEEEtoNum():
 
-    sbits, nbits, mbits = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
-    numIEE = list(input("Numero IEEE>"))
 
-    check = len(numIEE) == (int(sbits) + int(nbits) + int(mbits))
+def IEEE_to_num():
+    signe_bits, exponent_bits, mantissa_bits = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
+    num_IEE = list(input("Numero IEEE>"))
+
+    check = len(num_IEE) == (int(signe_bits) + int(exponent_bits) + int(mantissa_bits))
     if check != True:
         print("discrepancia de numeros !!")
         return
-    signe = numIEE[0:int(sbits)]
-    exponent = numIEE[int(sbits):int(nbits) + 1]
-    mantissa = numIEE[int(sbits) + int(nbits):]
+    signe = num_IEE[0:int(signe_bits)]
+    exponent = num_IEE[int(signe_bits):int(exponent_bits) + 1]
+    mantissa = num_IEE[int(signe_bits) + int(exponent_bits):]
 
     print("=========== Num IEE entrat ===============")
     print("signe", signe[0], "(+)" if signe[0] == "0" else "(-)")
 
-    decimal_exp = calculateExponentDecimalRepresentation("".join(exponent), nbits)
+    decimal_exp = calculate_exponent_decimal_representation("".join(exponent), exponent_bits)
     print("exponent", "".join(exponent), "-->", decimal_exp)
     print("Mantissa", "".join(mantissa))
     print("\nIEE-->Normalitzat: ", "+" if signe[0] == "0" else "-",
@@ -354,28 +394,31 @@ def IEEEtoNum():
         print("Nomero en decimal:", "+" if signe[0] == "0" else "-", binary_decimal_to_num("".join(norm)))
     else:
         pass
-def rangeIEE():
+
+
+def range_IEEE():
     signe, nbits, mbits = str(input("bits signe,bits exponent,bits mantissa >")).split(",")
     os.system("clear")
-    maxExp = "1" * int(nbits)
-    menorExp = "".zfill(int(nbits))
-    dec_M_Exp = calculateExponentDecimalRepresentation(maxExp, int(nbits))
-    dec_m_Exp = calculateExponentDecimalRepresentation(menorExp, int(nbits))
+    max_exp = "1" * int(nbits)
+    min_exp = "".zfill(int(nbits))
+    dec_max_exp = calculate_exponent_decimal_representation(max_exp, int(nbits))
+    dec_min_exp = calculate_exponent_decimal_representation(min_exp, int(nbits))
 
-    mantissaMajor_bitOcult = "1" * int(mbits)
-    mantissaMenor_bitOcult = "".zfill(int(mbits))
+    mantissa_major_bit_ocult = "1" * int(mbits)
+    mantissa_menor_bit_ocult = "".zfill(int(mbits))
 
-    mantissaMajor_no_bitOcult = "0.1" + mantissaMajor_bitOcult
-    mantissaMenor_no_bitOcult = "0.1" + mantissaMenor_bitOcult
+    mantissa_major_no_bit_ocult = "0.1" + mantissa_major_bit_ocult
+    mantissa_menor_no_bit_ocult = "0.1" + mantissa_menor_bit_ocult
     print("Rang dels exponents representables:")
-    print("Exponent Major", maxExp, ",que correspon a l'exponent +" + str(dec_M_Exp))
-    print("Exponent Major", menorExp, ",que correspon a l'exponent " + str(dec_m_Exp))
+    print("Exponent Major", max_exp, ",que correspon a l'exponent +" + str(dec_max_exp))
+    print("Exponent Major", min_exp, ",que correspon a l'exponent " + str(dec_min_exp))
     print("\n")
 
-    mostrarPositius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult, mantissaMenor_no_bitOcult)
+    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
     print("\n\n")
-    mostrarNegatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajor_no_bitOcult, mantissaMenor_no_bitOcult)
+    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
     return
+
 
 # Menus
 def main():
@@ -389,23 +432,23 @@ def main():
         opt = input(">")
         if opt == "0":
             os.system("clear")
-            numToIEEE()
+            num_to_IEEE()
             input("\ncontinuar ...")
             os.system("clear")
         elif opt == "1":
             os.system("clear")
-            IEEEtoNum()
+            IEEE_to_num()
             input("\ncontinuar ...")
             os.system("clear")
         elif opt == "2":
-            rangeIEE()
+            range_IEEE()
             input("\ncontinuar ...")
             os.system("clear")
         elif opt == "3":
             os.system("clear")
             input("Aviat!!")
 
-            #IEE_calculator()
+            # IEE_calculator()
 
             os.system("clear")
         elif opt == "x":
@@ -414,6 +457,8 @@ def main():
             print("Unknown")
             input("\ncontinuar ...")
             os.system("clear")
+
+
 def IEE_calculator():
     while True:
         banner(1)
@@ -426,7 +471,7 @@ def IEE_calculator():
         opt = input(">")
         if opt == "+":
             os.system("clear")
-            additionIEEE()
+            addition_IEEE()
             print("Aviat!!!")
             input("\ncontinuar ...")
             os.system("clear")
@@ -453,9 +498,13 @@ def IEE_calculator():
             print("Unknown")
             input("\ncontinuar ...")
             os.system("clear")
+
+
 # signal signint Ctrl+c handler
 def sigint_handler(signal, frame):
     sys.exit(0)
+
+
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
     os.system("clear")
