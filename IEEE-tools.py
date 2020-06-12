@@ -420,8 +420,11 @@ def range_IEEE():
 
 def select_menu_option(option):
     clear()
-    if option():
-        return
+    if isinstance(option,str):
+        print(option)
+    else:
+        if option():
+            return
     input("\nContinuar ...")
     clear()
 
@@ -440,11 +443,11 @@ def IEE_calculator():
         if opt == "+":
             select_menu_option(addition_IEEE)
         elif opt == "-":
-            select_menu_option(input("Not Implemented Yet"))
+            select_menu_option("Not Implemented Yet")
         elif opt == "*":
-            select_menu_option(input("Not Implemented Yet"))
+            select_menu_option("Not Implemented Yet")
         elif opt == "/":
-            select_menu_option(input("Not Implemented Yet"))
+            select_menu_option("Not Implemented Yet")
         elif opt == "t":
             return True
         elif opt == "x":
