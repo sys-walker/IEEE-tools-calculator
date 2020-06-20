@@ -33,60 +33,10 @@ def to_decimal_base(array, initial, increment):
 
 
 # Utils
-def string_binary_to_binary_array(binary_num_str):
-    array = list(binary_num_str)
-    a = []
-    for item in array:
-        if item == "1":
-            a.append(1)
-        else:
-            a.append(0)
-    return a
-
-
-def binary_to_string(array_binary_string_digits):
-    a = ""
-    for item in array_binary_string_digits:
-        if item == 1:
-            a += "1"
-        else:
-            a += "0"
-    return a
 
 
 def integer_to_binary(integer_str):
     return bin(int(integer_str))[2:]
-
-
-def add_binary(binary_num_str_1, binary_num_str_2):
-    a = string_binary_to_binary_array(binary_num_str_1)
-    b = string_binary_to_binary_array(binary_num_str_2)
-
-    a.reverse()
-    b.reverse()
-    len_max = max(len(a), len(b)) * 2
-    tmp = [0 for _ in range(len_max)]
-    it_tmp = len_max - 1
-    for i in range(len(a)):
-        tmp[it_tmp] = a[i] + b[i]
-        it_tmp -= 1
-    tmp.reverse()
-    carry = 0
-    total = []
-    for x in range(len_max):
-        T = tmp[x] + carry
-        if T == 2:
-            carry = 1
-            total.append(0)
-        elif T == 3:
-            carry = 1
-            total.append(1)
-        else:
-            carry = 0
-            total.append(T)
-
-    total.reverse()
-    return total
 
 
 def binary_decimal_to_num(binary_floating_point_str):
@@ -169,7 +119,90 @@ def represent_to_IEE(signe, nbits, mbits, exponent, normalitzat):
 
 
 # additionIEE subfunctions
-def sumador_mantisses(Astr, Bstr):
+
+def low_level_extra_zeros_remover(num_bits_str):
+    n = 0
+    for elem in num_bits_str:
+        if elem != "0":
+            break
+        else:
+            n += 1
+    return num_bits_str.replace('0', '', n)
+
+
+def low_level_bit_adder(num1_bits_str, num2_bits_str):
+    # DO NOT TOUCH THIS COULD BROKE BINARY ADDER
+    # THIS WILL ALWAYS ERASE EXTRA ZEROS 0000bbbbb -> bbbbb IF EXTRAS ARE NEEDED IT MUST BE ADDED OUTSIDE
+    # TO REMOVE EXTRAS FROM RESULT THAT MUST BE MODIFIED OUTSIDE FROM THIS FUNCTION
+    if len(num1_bits_str) < len(num2_bits_str):
+        num1_bits_str = num1_bits_str.zfill(len(num2_bits_str))
+    else:
+        num2_bits_str = num2_bits_str.zfill(len(num1_bits_str))
+    A = list(reversed(list(map(int, num1_bits_str))))
+    B = list(reversed(list(map(int, num2_bits_str))))
+
+    lenMax = max(len(A), len(B)) * 2
+    tmp = [0 for _ in range(lenMax)]
+    it_tmp = lenMax - 1
+    for i in range(len(A)):
+        tmp[it_tmp] = A[i] + B[i]
+        it_tmp -= 1
+    tmp.reverse()
+
+    carry = 0
+    Total = []
+    for x in range(lenMax):
+        T = tmp[x] + carry
+        if T == 2:
+            carry = 1
+            Total.append(0)
+        elif T == 3:
+            carry = 1
+            Total.append(1)
+        else:
+            carry = 0
+            Total.append(T)
+    Total = "".join(map(str, reversed(Total)))
+    Total = low_level_extra_zeros_remover(Total)
+    return "".join(Total)
+
+
+def low_level_bit_inverter(bits_str):
+    # THIS IS USED TO SUBSTRACT DOING ADDITION
+    # DO NOT TOUCH THIS COULD BROKE IEEE 754 CALCULATOR
+    # IF THIS MODIFIED COULD BE BROKEN MAKE YOU SURE WHAT ARE YOU DOING
+    # TO REMOVE EXTRAS, THEY MUST BE MODIFIED OUTSIDE THIS FUNCTION
+    bits_str = list(bits_str)
+    for i in range(len(bits_str)):
+        if (bits_str[i] == "1"):
+            bits_str[i] = "0"
+        else:
+            bits_str[i] = "1"
+
+    return "".join(bits_str)
+
+
+def low_level_bit_substractor(num1_bits_str, substraendo_bits_str):
+    # DO NOT TOUCH THIS COULD BROKE IEEE 754 CALCULATOR
+    # IF THIS MODIFIED COULD BE BROKEN MAKE YOU SURE WHAT ARE YOU DOING
+    # TO REMOVE EXTRAS, THEY MUST BE MODIFIED OUTSIDE THIS FUNCTION
+
+    if len(num1_bits_str) < len(substraendo_bits_str):
+        num1_bits_str = num1_bits_str.zfill(len(substraendo_bits_str))
+    else:
+        substraendo_bits_str = substraendo_bits_str.zfill(len(num1_bits_str))
+
+    substraendo_bits_str = low_level_bit_inverter(substraendo_bits_str)
+    substraendo_bits_str = low_level_bit_adder(substraendo_bits_str, "1")
+    t = low_level_bit_adder(num1_bits_str, substraendo_bits_str)
+
+    if len(t) > len(num1_bits_str):
+        t = t[1:]
+
+    return t
+
+
+'''def sumador_mantisses(Astr, Bstr):
     point = -1
     if len(Astr) < len(Bstr):
         Astr = list(Astr)
@@ -207,8 +240,7 @@ def sumador_mantisses(Astr, Bstr):
     total = trim_extras(total, point)
 
     return total
-
-
+    pass
 def sumar_binari_mantisses(Astr, Bstr):
     if len(Astr) < len(Bstr):
         Astr = Astr.zfill(len(Bstr))
@@ -220,28 +252,19 @@ def sumar_binari_mantisses(Astr, Bstr):
 
     total = binary_to_string(total)
     return total
-
-
-def trim_extras(total, point):
-    total = list(total)
-    total.insert(len(total) - point, ".")
-    rag_symbol = "1" if "1." in "".join(total) else "."
-    rag = total.index(rag_symbol)
-    total = total[rag:]
-    total = "".join(total) if rag_symbol == "1" else "0" + "".join(total)
-    return total
+    pass'''
 
 
 # IEE_calculator menu options
 def addition_IEEE():
-    mantissa_A = "0.1"
+    '''mantissa_A = "0.1"
     mantissa_B = "0.1"
     Total = sumador_mantisses(mantissa_A, mantissa_B)
     if "1." in Total:
         Total, _ = normalize_IEEE(Total)
     elif ".0" in Total:
         Total, _ = normalize_IEEE(Total)
-    print(mantissa_A, "+", mantissa_B, "=", Total)
+    print(mantissa_A, "+", mantissa_B, "=", Total)'''
     return
 
 
@@ -282,7 +305,7 @@ def mostrar_negatius(signe, maxExp, menorExp, dec_M_Exp, dec_m_Exp, mantissaMajo
     print("Exponent:", menorExp, "que representa l'exponent " + str(dec_m_Exp))
     print("Mantissa:" + (mantissaMenor_no_bitOcult).replace("0.1",
                                                             "") + ", que correspon a la mantissa " + mantissaMenor_no_bitOcult)
-    print("Num.Positiu major=-" + mantissaMenor_no_bitOcult + "x2^" + str(dec_m_Exp))
+    print("Num.Negatiu major=-" + mantissaMenor_no_bitOcult + "x2^" + str(dec_m_Exp))
     print("\nNegatiu Menor")
     print("Signe  = 1")
     print("Exponent:", maxExp, "que representa l'exponent +" + str(dec_M_Exp))
@@ -412,15 +435,17 @@ def range_IEEE():
     print("Exponent Major", min_exp, ",que correspon a l'exponent " + str(dec_min_exp))
     print("\n")
 
-    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
+    mostrar_positius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
+                     mantissa_menor_no_bit_ocult)
     print("\n\n")
-    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult, mantissa_menor_no_bit_ocult)
+    mostrar_negatius(signe, max_exp, min_exp, dec_max_exp, dec_min_exp, mantissa_major_no_bit_ocult,
+                     mantissa_menor_no_bit_ocult)
     return
 
 
 def select_menu_option(option):
     clear()
-    if isinstance(option,str):
+    if isinstance(option, str):
         print(option)
     else:
         if option():
@@ -441,7 +466,7 @@ def IEE_calculator():
         print("Sortir                          [x]")
         opt = input("> ")
         if opt == "+":
-            select_menu_option(addition_IEEE)
+            select_menu_option("Not Implemented Yet")
         elif opt == "-":
             select_menu_option("Not Implemented Yet")
         elif opt == "*":
