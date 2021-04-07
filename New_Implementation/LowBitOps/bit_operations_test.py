@@ -74,6 +74,18 @@ class BitAdderTestCase(unittest.TestCase):
     pass
 
 
+class BitSubstractorTestCase(unittest.TestCase):
+    def test_bit_substractor_0(self):
+        # trivial cases
+        self.assertEqual(bit_substractor("1","1"), "0")
+        self.assertEqual(bit_substractor("0","0"), "0")
+    def test_bit_substractor_1(self):
+        # trivial cases
+        self.assertEqual(bit_substractor("10","1"), "1")
+        self.assertEqual(bit_substractor("1","10"), "11")
+        self.assertEqual(bit_substractor("00010", "00001"), "1")
+
+
 class BitOnesComplementTestCase(unittest.TestCase):
     # these test were omitted because it calls same functions in LowLeverBitInverterTestCase class
     pass

@@ -18,12 +18,10 @@ def bit_substractor(minuend: str, subtrahend_: str) -> str:
 
     subtrahend = bit_twos_complement(subtrahend)
     result = low_level_bit_adder(minuend, subtrahend)
-    result = low_level_extra_zeros_remover(result)
 
     if len(result) != len(minuend):
-        return result[1:]
-    else:
-        return result
+        result=result[1:]
+    return low_level_extra_zeros_remover(result)
 
 
 def bit_ones_complement(num: str) -> str:
@@ -35,4 +33,4 @@ def bit_twos_complement(num: str) -> str:
 
 
 if __name__ == '__main__':
-    print(bit_substractor("110", "1"), "<-xd")
+    print(bit_substractor("10", "1"), "<-xd")

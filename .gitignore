@@ -60,7 +60,7 @@ venv/**
 mockfile*.py
 New_Implementation/LowBitOps/venv/**
 New_Implementation/LowBitOps/.idea/**
-
+New_Implementation/LowBitOps/__pycache__/**
 
 
 # mpeltonen/sbt-idea plugin
