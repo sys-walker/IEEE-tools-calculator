@@ -58,8 +58,8 @@ venv/**
 
 # mock files
 mockfile*.py
-./New_Implementation/LowBitOps/venv/**
-./New_Implementation/LowBitOps/.idea/**
+New_Implementation/LowBitOps/venv/**
+New_Implementation/LowBitOps/.idea/**
 
 
 
