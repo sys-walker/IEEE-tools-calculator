@@ -55,6 +55,8 @@ cmake-build-*/
 # IntelliJ
 out/
 venv/**
+# mock files
+mockfile*.py
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
